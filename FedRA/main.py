@@ -7,6 +7,8 @@ import os
 print(f"Huggingface cache directory: {os.environ.get('HF_HOME', os.path.expanduser('~/.cache/huggingface'))}")
 
 
+import os
+os.environ["PYTORCH_CUDA_ALLOC_CONF"] = "expandable_segments:True"
 
 
 
