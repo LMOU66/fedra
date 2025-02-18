@@ -137,7 +137,9 @@ class Client:
                 outputs = self.local_model(input_ids=input_ids, attention_mask=attention_mask)
                 logits = outputs.logits[:, :-1]
 
-                loss = task_criterion(logits.reshape(-1, logits.size(-1)), labels.view(-1))
+                min_size = min(logits.size(1), labels.size(1))
+                loss = task_criterion(logits[:, :min_size, :].reshape(-1, logits.size(-1)),
+                                      labels[:, :min_size].reshape(-1))
 
                 loss.backward()
                 torch.nn.utils.clip_grad_norm_(self.local_model.parameters(), max_norm=1.0)
